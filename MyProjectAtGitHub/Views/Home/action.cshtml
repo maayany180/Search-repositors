@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "action";
+}
+
+<body>
+   <center><h3>@ViewBag.note</h3></center> <br />  
+    <div>
+        @if (Session["BookMark"].ToString() != " ")
+        {
+            foreach (var item in (Dictionary<string, string>)Session["BookMark"])
+            {
+                <button onclick="window.location.href='@item.Value'" style="color:black;border-color:black"> Link to the @item.Key</button>
+                <br /><br />
+            }
+         }
+        
+    </div>
+</body>
+
+
+

@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "Start";
+}
+
+<script>
+
+    function f(id)
+    {
+        $.ajax({
+            type: "post",
+            dataType: 'JSON',
+            url: "@Url.Action("AddBookMark")",
+            data: { ID:id },
+            success: function (result)
+            {
+                alert(id+" Has been added to your bookmark");
+            },
+            error: function (error) {
+                console.log(error)
+            },
+        })
+    }
+
+    function Search()
+    {
+        var nameofsearch = document.getElementById("Name").value;
+        $.ajax({
+                type: "get",
+                dateType: 'JSON',
+                url: "https://api.github.com/search/repositories?q=" + nameofsearch,
+                data: {  },
+                success: function (result)
+                {
+                    var container = $('<div />');
+                    if (result.items == null) {
+                        container.append('<h3>vvvvvvvvvvv</h3>');
+                    }
+                    else
+                    {
+                        for (var i = 0; i < result.items.length; i++) {
+                            var name = result.items[i].name;
+                            var avatar = result.items[i].owner.avatar_url;
+                            var id = result.items[i].full_name;
+                            
+                            container.append(' <div style="border-color: black !important;border-style: solid;float:left"><center> <p>' + name + '</p></center> <br /><center> <img style="height:200px" src=' + avatar + ' /></center> <br /> <button style="border-top-color:black;color:black" onclick=f("' + id + '")> Add the repository to your bookmark </button></div >');
+
+
+                            console.log("name:", name)
+                            console.log("avatar:", avatar)
+                        }
+                    }
+                    $('#div').html(container);
+                },
+                error: function (error)
+                {
+                    console.log(error)
+                },
+        })
+    }
+
+</script>
+
+<body>
+    <center>
+        <h3>
+            Here you can find any GITHUB repository you want
+        </h3>
+    </center>
+    <br />
+    <input style="width:350px;border-color:black" id="Name" type="text" placeholder="Enter a searchable repository name" />
+    <button style="border-color:black" onclick="Search()">Search</button><button style="margin-left:850px;border-color:black" onclick="location.href='@Url.Action("action", "Home")'"> Your bookmark </button>
+    <br />
+    
+    <div id="div" style="overflow: hidden" >
+       
+            
+    </div>
+</body>
